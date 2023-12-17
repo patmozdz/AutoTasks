@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate
 from twilio.twiml.messaging_response import MessagingResponse
 
 
+@api_view(['POST'])
 def receive_sms_from_twilio(request):
     body = request.POST.get('Body', None)
     phone = request.POST.get('From', None)
