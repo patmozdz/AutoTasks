@@ -1,26 +1,10 @@
-def create_reminder(user_id, title, description, reminder_time, recurring_interval=None, urgency=None):
-    """
-    Creates a new reminder.
-    """
-    pass
-
-
-def edit_reminder(user_id, reminder_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
-    """
-    Edits an existing reminder.
-    """
-    pass
-
-
-def delete_reminder(user_id, reminder_id):
-    """
-    Deletes an existing reminder.
-    """
-    pass
+from .models import edit_reminder
 
 
 def send_notification(user_id, reminder_id):
     """
     Sends a notification for a reminder.
     """
-    pass
+    reminder = Reminder.objects.get(id=reminder_id, user_id=user_id)
+    # Here you can implement the logic to send a notification
+    # For example, you can send an email or a push notification
