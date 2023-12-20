@@ -9,6 +9,8 @@ django = "*"
 "azure.keyvault.secrets" = "*"
 openai = "*"
 tenacity = "*"
+djangorestframework = "*"
+twilio = "*"
 
 [dev-packages]
 

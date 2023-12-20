@@ -22,6 +22,9 @@ class Reminder(models.Model):
         return self.title
 
 
+###
+# These functions (below) cannot be an API because ChatGPT needs to be able to call them
+###
 def create_reminder(user_id, title, description, reminder_time, recurring_interval=None, urgency=None):
     """
     Creates a new reminder.
@@ -30,21 +33,26 @@ def create_reminder(user_id, title, description, reminder_time, recurring_interv
     reminder.save()
 
 
-def edit_reminder(user_id, reminder_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
+def edit_reminder(reminder_id, user_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
     """
     Edits an existing reminder.
     """
     reminder = Reminder.objects.get(id=reminder_id, user_id=user_id)
     if title is not None:
         reminder.title = title
+
     if description is not None:
         reminder.description = description
+
     if reminder_time is not None:
         reminder.reminder_time = reminder_time
+
     if recurring_interval is not None:
         reminder.recurring_interval = recurring_interval
+
     if urgency is not None:
         reminder.urgency = urgency
+
     reminder.save()
 
 

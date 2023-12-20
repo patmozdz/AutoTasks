@@ -3,9 +3,6 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Note, File
-from .serializers import NoteSerializer, FileSerializer
-from .tasks import full_process
 from django.contrib.auth import authenticate
 from twilio.twiml.messaging_response import MessagingResponse
 
