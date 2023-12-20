@@ -5,8 +5,13 @@ name = "pypi"
 
 [packages]
 django = "*"
+"azure.identity" = "*"
+"azure.keyvault.secrets" = "*"
+openai = "*"
+tenacity = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.12"
+python_full_version = "3.12.1"

@@ -3,5 +3,33 @@
         "keyvault",
         "openai",
         "OPENAIAPIKEY"
-    ]
+    ],
+    "files.exclude": {
+        "**/.git": false,
+        "**/.svn": false,
+        "**/.hg": false,
+        "**/CVS": false,
+        "**/.DS_Store": false,
+        "**/Thumbs.db": false,
+        ".gitattributes": false,
+        "**/__pycache__": false,
+        "LICENSE": false,
+        "Pipfile": false,
+        "Pipfile.lock": false,
+        "README.md": false
+    },
+    "explorerExclude.backup": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".gitattributes": true,
+        "**/__pycache__": true,
+        "LICENSE": true,
+        "Pipfile": true,
+        "Pipfile.lock": true,
+        "README.md": true
+    }
 }
