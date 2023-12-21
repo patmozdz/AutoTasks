@@ -1,6 +1,6 @@
 # import the OpenAI Python library for calling the OpenAI API
 from openai import OpenAI
-from AutoTasks.chat.secrets_manager import OPENAI_API_KEY
+from AutoTasks_backend.chat.secrets_manager import OPENAI_API_KEY
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 
