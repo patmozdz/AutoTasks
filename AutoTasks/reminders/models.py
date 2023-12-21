@@ -1,5 +1,5 @@
 from django.db import models
-from User import User
+from user.models import User
 
 
 class Reminder(models.Model):
@@ -56,7 +56,7 @@ def edit_reminder(reminder_id, user_id, title=None, description=None, reminder_t
     reminder.save()
 
 
-def delete_reminder(user_id, reminder_id):
+def delete_reminder(reminder_id, user_id):
     """
     Deletes an existing reminder.
     """
