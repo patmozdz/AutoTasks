@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from twilio.twiml.messaging_response import MessagingResponse
+from chat.utils import chat_completion_from_sms
 
 
 @api_view(['POST'])
@@ -16,7 +17,8 @@ def receive_sms_from_twilio(request):
     user = authenticate(request, phone=phone)
     if user is not None:
         resp = MessagingResponse()
-        resp.message("Hello, you are already registered.")
+        chat_completion = chat_completion_from_sms(user, body)
+        resp.message = chat_completion.choices[0].text
         # Proceed to do chatgpt stuff (remove you are already registered message)
     else:
         # Handle unauthenticated user

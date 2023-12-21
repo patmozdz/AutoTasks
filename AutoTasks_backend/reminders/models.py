@@ -25,19 +25,19 @@ class Reminder(models.Model):
 ###
 # These functions (below) cannot be an API because ChatGPT needs to be able to call them
 ###
-def create_reminder(user_id, title, description, reminder_time, recurring_interval=None, urgency=None):
+def create_reminder(user, title, description, reminder_time, recurring_interval=None, urgency=None):
     """
     Creates a new reminder.
     """
-    reminder = Reminder(user_id=user_id, title=title, description=description, reminder_time=reminder_time, recurring_interval=recurring_interval, urgency=urgency)
+    reminder = Reminder(user=user, title=title, description=description, reminder_time=reminder_time, recurring_interval=recurring_interval, urgency=urgency)
     reminder.save()
 
 
-def edit_reminder(reminder_id, user_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
+def edit_reminder(user, reminder_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
     """
     Edits an existing reminder.
     """
-    reminder = Reminder.objects.get(id=reminder_id, user_id=user_id)
+    reminder = Reminder.objects.get(user=user, id=reminder_id)
     if title is not None:
         reminder.title = title
 
@@ -56,8 +56,8 @@ def edit_reminder(reminder_id, user_id, title=None, description=None, reminder_t
     reminder.save()
 
 
-def delete_reminder(reminder_id, user_id):
+def delete_reminder(user, reminder_id):
     """
     Deletes an existing reminder.
     """
-    Reminder.objects.filter(id=reminder_id, user_id=user_id).delete()
+    Reminder.objects.filter(user=user, id=reminder_id).delete()
