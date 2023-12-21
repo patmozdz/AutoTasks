@@ -18,11 +18,11 @@ def receive_sms_from_twilio(request):
     if user is not None:
         resp = MessagingResponse()
         chat_completion = chat_completion_from_sms(user, body)
-        resp.message = chat_completion.choices[0].text
-        # Proceed to do chatgpt stuff (remove you are already registered message)
+        resp.message = chat_completion['choices'][0]['message']['content']
     else:
         # Handle unauthenticated user
         resp = MessagingResponse()
         resp.message("You are not registered.")
 
+    # Do you need to send a message to the user or is sending the response enough?
     return Response(str(resp), status=status.HTTP_200_OK, content_type='text/xml')
