@@ -16,9 +16,16 @@ def receive_sms_from_twilio(request):
 
     user = authenticate(request, phone=phone)
     if user is not None:
-        resp = MessagingResponse()
-        chat_completion = chat_completion_from_sms(user, body)
-        resp.message = chat_completion['choices'][0]['message']['content']
+        end_choices = ['END', 'STOP', 'QUIT', 'EXIT', 'UNSUBSCRIBE', 'CANCEL']
+        if body in end_choices:
+            # TODO: Handle user unsubscribing, maybe delete account?
+            resp = MessagingResponse()
+            resp.message("You have been unsubscribed.")
+        else:
+            # Handle user sending a message
+            resp = MessagingResponse()
+            chat_response = chat_completion_from_sms(user, body)
+            resp.message = chat_response.choices[0].message.content
     else:
         # Handle unauthenticated user
         resp = MessagingResponse()
