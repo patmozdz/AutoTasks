@@ -19,45 +19,46 @@ class Reminder(models.Model):
     urgency = models.IntegerField(choices=URGENCY_CHOICES, null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return f"Reminder({self.id}, '{self.title}', '{self.description}', '{self.reminder_time}', '{self.recurring_interval}', '{self.urgency}')"
 
+    ###
+    # These functions (below) cannot be an API because ChatGPT needs to be able to call them
+    ###
+    @classmethod
+    def create_reminder(cls, user, title, description, reminder_time, recurring_interval=None, urgency=None):
+        """
+        Creates a new reminder.
+        """
+        reminder = cls(user=user, title=title, description=description, reminder_time=reminder_time, recurring_interval=recurring_interval, urgency=urgency)
 
-###
-# These functions (below) cannot be an API because ChatGPT needs to be able to call them
-###
-def create_reminder(user, title, description, reminder_time, recurring_interval=None, urgency=None):
-    """
-    Creates a new reminder.
-    """
-    reminder = Reminder(user=user, title=title, description=description, reminder_time=reminder_time, recurring_interval=recurring_interval, urgency=urgency)
-    reminder.save()
+        reminder.save()
 
+        return f'Created reminder: {reminder}'
 
-def edit_reminder(user, reminder_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
-    """
-    Edits an existing reminder.
-    """
-    reminder = Reminder.objects.get(user=user, id=reminder_id)
-    if title is not None:
-        reminder.title = title
+    @classmethod
+    def edit_reminder(cls, user, reminder_id, title=None, description=None, reminder_time=None, recurring_interval=None, urgency=None):
+        """
+        Edits an existing reminder.
+        """
+        reminder = cls.objects.get(user=user, id=reminder_id)
+        if title is not None:
+            reminder.title = title
+        if description is not None:
+            reminder.description = description
+        if reminder_time is not None:
+            reminder.reminder_time = reminder_time
+        if recurring_interval is not None:
+            reminder.recurring_interval = recurring_interval
+        if urgency is not None:
+            reminder.urgency = urgency
 
-    if description is not None:
-        reminder.description = description
+        reminder.save()
+        return f'Edited reminder. New values: {reminder}'
 
-    if reminder_time is not None:
-        reminder.reminder_time = reminder_time
-
-    if recurring_interval is not None:
-        reminder.recurring_interval = recurring_interval
-
-    if urgency is not None:
-        reminder.urgency = urgency
-
-    reminder.save()
-
-
-def delete_reminder(user, reminder_id):
-    """
-    Deletes an existing reminder.
-    """
-    Reminder.objects.filter(user=user, id=reminder_id).delete()
+    @classmethod
+    def delete_reminder(cls, user, reminder_id):
+        """
+        Deletes an existing reminder.
+        """
+        cls.objects.filter(user=user, id=reminder_id).delete()
+        return f'Deleted reminder with id {reminder_id}'
