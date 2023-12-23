@@ -40,7 +40,7 @@ def pretend_receive_sms_from_twilio(request):
         resp = MessagingResponse()
         resp.message("Thank you for registering! Please type to engage with the autotasker.")
 
-    return str(resp), status.HTTP_200_OK
+    return resp.message, status.HTTP_200_OK
 
 
 if __name__ == '__main__':
