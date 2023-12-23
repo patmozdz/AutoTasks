@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField
 from AutoTasks_backend import secrets_manager
 import openai
 from reminders import Reminder
@@ -21,8 +20,8 @@ Feel free to ask questions to clarify the user's intent, as long as it's short. 
         on_delete=models.CASCADE,
         related_name='chat'
     )
-    response_history = JSONField(default=list)  # Store an array of chat completion objects
-    messages = JSONField(default=list)  # Store an array of messages
+    response_history = models.JSONField(default=list)  # Store an array of chat completion objects
+    messages = models.JSONField(default=list)  # Store an array of messages
     tools = gpt_tools.tools
 
     def __str__(self):
