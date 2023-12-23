@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from twilio.twiml.messaging_response import MessagingResponse
-from chat.utils import chat_completion_from_sms
+from chat.models import Chat
 
 
 @api_view(['POST'])
@@ -24,7 +24,7 @@ def receive_sms_from_twilio(request):
         else:
             # Handle user sending a message
             resp = MessagingResponse()
-            chat_response = chat_completion_from_sms(user, body)
+            chat_response = Chat.chat_completion_from_sms(user, body)
             resp.message = chat_response.choices[0].message.content
     else:
         # Handle unauthenticated user
