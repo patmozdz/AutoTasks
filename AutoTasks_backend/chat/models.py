@@ -2,10 +2,10 @@ from django.db import models
 from django.conf import settings
 from AutoTasks_backend import secrets_manager
 import openai
-from reminders import Reminder
+from reminders.models import Reminder
 import json
 from user.models import User
-import gpt_tools
+from . import gpt_tools
 
 
 class Chat(models.Model):
@@ -13,7 +13,7 @@ class Chat(models.Model):
 Assist the user in creating, updating, and deleting tasks.
 Feel free to ask questions to clarify the user's intent, as long as it's short. Below is a list of all the user's reminders, with the first one being the format:"""
     GPT_MODEL = "gpt-4-vision-preview"
-    client = openai.Client(secrets_manager.OPENAI_API_KEY, max_retries=3, max_tokens=150)  # TODO: Fix max tokens
+    client = openai.Client(api_key=secrets_manager.OPENAI_API_KEY, max_retries=3)
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -59,7 +59,7 @@ Feel free to ask questions to clarify the user's intent, as long as it's short. 
             print(f"Exception: {e}")
 
     def get_response_and_add_to_history(self):
-        response = self.client.chat.completions.create(messages=self.messages, model=self.GPT_MODEL, tools=self.tools)
+        response = self.client.chat.completions.create(messages=self.messages, model=self.GPT_MODEL, tools=self.tools, max_tokens=150)  # TODO: Adjust max_tokens
         self.response_history.append(response)
         return response
 

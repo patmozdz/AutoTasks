@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import sms_response
+from .api_views import receive_sms_from_twilio
 
 urlpatterns = [
-    path('sms/', sms_response, name='sms_response'),
+    path('twilio_endpoint/', receive_sms_from_twilio, name='twilio_endpoint'),
 ]
