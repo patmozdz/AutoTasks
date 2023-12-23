@@ -9,8 +9,9 @@ django.setup()
 from rest_framework import status
 from django.contrib.auth import authenticate
 from twilio.twiml.messaging_response import MessagingResponse
-from user.models import User
 from chat.models import Chat
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 def pretend_receive_sms_from_twilio(request):

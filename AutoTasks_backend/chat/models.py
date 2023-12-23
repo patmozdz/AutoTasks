@@ -4,8 +4,9 @@ from AutoTasks_backend import secrets_manager
 import openai
 from reminders.models import Reminder
 import json
-from user.models import User
 from . import gpt_tools
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class Chat(models.Model):
