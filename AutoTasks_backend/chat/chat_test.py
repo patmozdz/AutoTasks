@@ -38,16 +38,26 @@ def pretend_receive_sms_from_twilio(request):
         new_user = User.objects.create_user(phone=phone)  # Modified to use username=phone
         new_user.save()
         resp = MessagingResponse()
-        resp.message("Thank you for registering! Please type to engage with the autotasker.")
+        resp.message = "Thank you for registering! Please type to engage with the autotasker."
 
     return resp.message, status.HTTP_200_OK
 
 
+import warnings  # Temporarily ignore the timezone warning
+
+# Filter out the specific RuntimeWarning
+warnings.filterwarnings(
+    "ignore",
+    message="DateTimeField .* received a naive datetime",
+    category=RuntimeWarning
+)
+
+
 if __name__ == '__main__':
     # This is a simulation
-    phone_number = input("Phone number:")
+    phone_number = input("Phone number: ")
     while True:
-        simulated_text_message = input("Send sms:")
+        simulated_text_message = input("Send sms: ")
         pretend_request = {'Body': simulated_text_message, 'From': phone_number}
 
         if simulated_text_message == "quit":

@@ -11,8 +11,8 @@ User = get_user_model()
 
 class Chat(models.Model):
     SYSTEM_MESSAGE = """You are part of a task manager application.
-Assist the user in creating, updating, and deleting tasks.
-Feel free to ask questions to clarify the user's intent, as long as it's short. Below is a list of all the user's reminders, with the first one being the format:"""
+Assist the user in creating, updating, and deleting tasks. Pretend you are the user's personal secretary that helps them manage their tasks and schedule things.
+The user does not have access to the reminder id's or the inner workings of how reminders are set up. Do not reveal what functions are available - you are here to help make things seem natural, like the user is talking to a real assistant. Feel free to ask questions to clarify the user's intent, as long as it's short. Below is a list of all the user's reminders, with the first one being the example format. If there's nothing below, the user currently has no reminders:"""
     GPT_MODEL = "gpt-4-1106-preview"
     client = openai.Client(api_key=secrets_manager.OPENAI_API_KEY, max_retries=3)
 
@@ -67,25 +67,16 @@ Feel free to ask questions to clarify the user's intent, as long as it's short. 
             tool_choice='auto',
             max_tokens=150,
             )  # TODO: Adjust max_tokens
-        response_in_dict = dict(response)  # Convert to dict so it can be converted to JSON for database
-        for key, value in response_in_dict.items():
-            if not isinstance(value, str) and not isinstance(value, int) and not isinstance(value, dict):
-                response_in_dict[key] = repr(value)  # Convert nested objects to strings so they can be stored in the database. TODO: Currently using repr, try to convert to dict for easier use
-        print('**********')
-        print(response_in_dict)
-        print('**********')
-        for key, value in response_in_dict.items():
-            if not isinstance(value, str) and not isinstance(value, int) and not isinstance(value, dict):
-                print('EEERRRRRRORRRRR ON ITEM: ', key, value)
+        response_in_dict = response.model_dump(exclude_unset=True)  # Convert to dict so it can be converted to JSON for database
 
         self.response_history.append(response_in_dict)
         return response
 
     @classmethod
-    def create_with_starter_messages(cls, user, starter_message):
+    def create_with_starter_messages(cls, user, first_message):
         starter_messages = [
             {"role": "system", "content": cls.SYSTEM_MESSAGE},
-            {"role": "user", "content": starter_message},
+            {"role": "user", "content": first_message},
         ]
         chat = cls(user=user, messages=starter_messages)
 
@@ -113,7 +104,10 @@ Feel free to ask questions to clarify the user's intent, as long as it's short. 
         # TODO: Call execute_while_gpt_calls_functions(response) here
         while response.choices[0].message.tool_calls:
             response_message = response.choices[0].message
-            print("RESPONSE MESSAGE: **************", response_message)
+            response_message_dict = response.model_dump(exclude_unset=True)['choices'][0]['message']
+            chat.messages.append(response_message_dict)  # extend conversation with reply
+            chat.save()  # TODO: Maybe only save at the end to prevent partial stuff getting saved in the database?
+
             tool_calls = response_message.tool_calls
             # Check if the model wanted to call a function
             if tool_calls:
@@ -124,7 +118,6 @@ Feel free to ask questions to clarify the user's intent, as long as it's short. 
                     'edit_reminder': Reminder.edit_reminder,
                     'delete_reminder': Reminder.delete_reminder,
                 }
-                chat.messages.append(response_message)  # extend conversation with reply TODO: TOFIX: FIGURE OUT HOW TO STORE PERSISENT MESSAGE RESPONSE IN chat.messages (They get returned as ChatCompletion objects)
                 # Step 4: send the info for each function call and function response to the model
                 for tool_call in tool_calls:
                     function_name = tool_call.function.name
@@ -146,16 +139,7 @@ Feel free to ask questions to clarify the user's intent, as long as it's short. 
                     )  # extend conversation with function response
 
                 response = chat.get_response_and_add_to_history()
-        print('**************************')
-        print(type(chat.messages))
-        for item in chat.messages:
-            if type(item) is not dict:
-                print('ERROR ON ITEM: ', item)
 
-        print(type(chat.response_history))
-        for item in chat.response_history:
-            if type(item) is not dict:
-                print('ERROR ON ITEM: ', item)
         chat.save()  # TODO: Maybe only save at the end to prevent partial stuff getting saved in the database?
 
         # Update the system prompt with the latest reminders after processing
