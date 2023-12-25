@@ -5,6 +5,7 @@ import openai
 from reminders.models import Reminder
 import json
 from . import gpt_tools
+from datetime import datetime
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -45,8 +46,8 @@ The user does not have access to the reminder id's or the inner workings of how 
             # Join all formatted reminders into a single string
             reminders_string = "\n".join(reminder_list)
 
-            # Update the system prompt with the new reminders
-            updated_system_message = self.SYSTEM_MESSAGE + "\n" + reminders_string
+            # Update the system prompt with the new reminders, also update with current datetime
+            updated_system_message = "Current datetime: " + str(datetime.now()) + "\n" + self.SYSTEM_MESSAGE + "\n" + reminders_string
 
             # Update the first message (system message) in messages. Can change to a a for loop to find system message if system message isn't always first message
             if self.messages[0]['role'] == 'system':
