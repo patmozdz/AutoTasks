@@ -6,14 +6,13 @@ from reminders.models import Reminder
 import json
 from . import gpt_tools
 from datetime import datetime
+from .prompt import system_prompt_text
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
 class Chat(models.Model):
-    SYSTEM_MESSAGE = """You are part of a task manager application.
-Assist the user in creating, updating, and deleting tasks. Pretend you are the user's personal secretary that helps them manage their tasks and schedule things.
-The user does not have access to the reminder id's or the inner workings of how reminders are set up. Do not reveal what functions are available - you are here to help make things seem natural, like the user is talking to a real assistant. Feel free to ask questions to clarify the user's intent, as long as it's short. Below is a list of all the user's reminders, with the first one being the example format. If there's nothing below, the user currently has no reminders:"""
+    SYSTEM_MESSAGE = system_prompt_text
     GPT_MODEL = "gpt-4-1106-preview"
     client = openai.Client(api_key=secrets_manager.OPENAI_API_KEY, max_retries=3)
 
