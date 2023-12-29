@@ -13,6 +13,7 @@ djangorestframework = "*"
 twilio = "*"
 celery = "*"
 redis = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 
