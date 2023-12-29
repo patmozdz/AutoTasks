@@ -1,0 +1,9 @@
+# For now, only run redis in a container. In production, django, celery, and redis will be run in separate containers.
+# To run container: docker-compose up -d
+
+version: '3'
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
