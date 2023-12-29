@@ -93,7 +93,7 @@ class Chat(models.Model):
             chat.save()
         else:
             # If a Chat object does not exist, create a new one
-            chat = Chat.create_with_starter_messages(user, body)  # chat.chat_object_history is still blank, TODO: append when chat_completion is called
+            chat = Chat.create_with_starter_messages(user, body)
             chat.save()
 
         # Update the system prompt with the latest reminders before processing
@@ -101,7 +101,7 @@ class Chat(models.Model):
 
         # Call the API method with the arguments
         response = chat.get_response_and_add_to_history()
-        # TODO: Call execute_while_gpt_calls_functions(response) here
+
         while response.choices[0].message.tool_calls:
             response_message = response.choices[0].message
             response_message_dict = response.model_dump(exclude_unset=True)['choices'][0]['message']
