@@ -11,6 +11,8 @@ openai = "*"
 tenacity = "*"
 djangorestframework = "*"
 twilio = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 
