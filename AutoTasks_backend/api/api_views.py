@@ -24,7 +24,7 @@ def receive_sms_from_twilio(request):
         else:
             # Handle user sending a message
             resp = MessagingResponse()
-            chat_response = Chat.chat_completion_from_sms(user, body)
+            chat_response = Chat.chat_completion_from_sms_body(user, body)
             resp.message = chat_response.choices[0].message.content
     else:
         # Handle unauthenticated user
