@@ -9,7 +9,7 @@ from chat.models import Chat
 @shared_task
 def watch_for_reminder_time():
     current_time = timezone.now()
-    reminders = Reminder.objects.filter(reminder_time__lte=current_time, notified=False)  # TODO: Add flag to database 'notified'
+    reminders = Reminder.objects.filter(reminder_time__lte=current_time)  # TODO: Add flag to database 'notified'
     for reminder in reminders:
         user = reminder.user
         Chat.chat_completion_from_reminder(user, reminder)

@@ -8,7 +8,6 @@ from . import gpt_tools
 from datetime import datetime
 from .prompt import system_prompt_text
 from django.contrib.auth import get_user_model
-import time
 User = get_user_model()
 
 
@@ -100,7 +99,7 @@ class Chat(models.Model):
             chat.save()
 
         # Call the API method with the arguments
-        response = chat.get_and_save_response_with_tools_option()
+        response = chat.get_and_save_response_with_tools_options()
 
         return response
 
@@ -112,31 +111,23 @@ class Chat(models.Model):
         assert reminder.user == user, "Reminder user does not match chat user."
 
         chat = cls.objects.filter(user=user).first()
-        chat.messages.append(
-                        {
-                            "role": "reminder_system",
-                            "content": f"The reminder with id {reminder.id} was triggered. Please notify the user and delete the reminder when the user indicates it as complete. Depending on the urgency, schedule a follow up time to check in again if the user remains unresponsive. Schedule the checkin before sending your initial notification.",
-                        }
-                    )  # extend conversation with reminder notification
+        if reminder.notified:  # Treat the notification differently if the reminder was already notified before
+            chat.messages.append(
+                            {
+                                "role": "reminder_system",
+                                "content": f"The reminder with id {reminder.id} was triggered.",
+                            }
+                        )  # extend conversation with reminder notification
+        else:
+            chat.messages.append(
+                            {
+                                "role": "reminder_system",
+                                "content": f"A follow up for the reminder with id {reminder.id} was triggered.",
+                            }
+                        )  # extend conversation with follow up reminder notification.
 
-        response = chat.get_and_save_response_with_tools_option()
-
+        response = chat.get_and_save_response_with_tools_options()
         return response
-
-    def schedule_checkin(self, reminder: Reminder, minutes: int):
-        most_recent_message_content = self.get_latest_message_content()
-        seconds = minutes * 60
-        time.sleep(seconds)
-        if self.get_latest_message_content() == most_recent_message_content:  # Indicates that the user has not responded in the given time
-            self.messages.append(
-                {
-                    "role": "reminder_system",
-                    "content": f"The user has not responded in {minutes} minutes since your last message. Depending on the urgency, please either schedule another checkin and send another message, delete the reminder, or reschedule the reminder.",
-                }
-            )
-
-        # TODO: Needs to be asynchronous
-        return 'Checkin scheduled.'
 
     def get_and_save_response_with_tools_options(self, tool_names: list = None):
         # Call the API method with the arguments
@@ -158,7 +149,6 @@ class Chat(models.Model):
                     'create_reminder': Reminder.create_reminder,
                     'edit_reminder': Reminder.edit_reminder,
                     'delete_reminder': Reminder.delete_reminder,
-                    'schedule_checkin': self.schedule_checkin,  # TODO: Also add to JSON Schema
                 }
                 if tool_names:
                     available_functions = {name: function for name, function in all_functions.items() if name in tool_names}

@@ -18,6 +18,7 @@ class Reminder(models.Model):
     reminder_time = models.DateTimeField()
     recurring_interval = models.IntegerField(null=True, blank=True)  # Assuming interval in minutes
     urgency = models.IntegerField(choices=URGENCY_CHOICES, null=True, blank=True)
+    notified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Reminder({self.id}, '{self.title}', '{self.description}', '{self.reminder_time}', '{self.recurring_interval}', '{self.urgency}')"
