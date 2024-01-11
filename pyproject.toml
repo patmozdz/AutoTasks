@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "autotasks"
+version = "0.1.0"
+description = "An AI powered app for managing tasks and reminders."
+authors = ["Patrick Mozdzierz"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+Django = "^5.0.1"
+azure-identity = "^1.15.0"
+azure-keyvault-secrets = "^4.7.0"
+openai = "^1.7.1"
+djangorestframework = "^3.14.0"
+twilio = "^8.11.0"
+celery = "^5.3.6"
+redis = "^5.0.1"
+django-celery-beat = "^2.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -31,3 +31,6 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+
+# Steps to run simulation:
+/home/papis/.local/share/virtualenvs/AutoTasks-g5dGuj5d/bin/python -m celery -A AutoTasks_backend worker --loglevel=info
