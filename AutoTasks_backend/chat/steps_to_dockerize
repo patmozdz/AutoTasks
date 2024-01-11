@@ -33,4 +33,4 @@ services:
       - "6379:6379"
 
 # Steps to run simulation:
-/home/papis/.local/share/virtualenvs/AutoTasks-g5dGuj5d/bin/python -m celery -A AutoTasks_backend worker --loglevel=info
+celery -A AutoTasks_backend beat
