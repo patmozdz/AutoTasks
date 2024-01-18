@@ -33,4 +33,16 @@ services:
       - "6379:6379"
 
 # Steps to run simulation:
+# One terminal:
+celery -A AutoTasks_backend worker --loglevel=info
+
+# Second terminal:
 celery -A AutoTasks_backend beat
+
+# Run chat/chat_test.py
+
+
+# To clear redis queue:
+redis-cli
+KEYS *
+DEL queue_name

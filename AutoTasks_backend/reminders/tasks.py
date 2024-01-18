@@ -4,8 +4,7 @@ from .models import Reminder
 from chat.models import Chat
 
 
-# Periodic task setup can be found in .management/commands/setup_periodic_tasks.py. This is because the setup needs to only happen once after deployment,
-# which will be handled by Docker
+# This task is run in 'AutoTasks_backend/celery.py' every minute
 @shared_task
 def watch_for_reminder_time():
     current_time = timezone.now()
@@ -13,8 +12,12 @@ def watch_for_reminder_time():
     for reminder in reminders:
         try:
             user = reminder.user
-            Chat.chat_completion_from_reminder(user, reminder)
+            response = Chat.chat_completion_from_reminder(user, reminder)
             reminder.notified = True  # Flag to indicate notification was sent
             reminder.save()
+
+            # Below is for testing purposes, below should print to Celery worker's console
+            response_message = response.choices[0].message.content
+            print(response_message)
         except Exception as e:
             print(e)

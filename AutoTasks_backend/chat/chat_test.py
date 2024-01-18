@@ -2,7 +2,13 @@ import os
 import django
 import sys
 
-sys.path.append("C:/Users/Papis/Documents/~GitHub Projects/AutoTasks/AutoTasks_backend")
+# Windows setup below
+# sys.path.append("C:/Users/Papis/Documents/~GitHub Projects/AutoTasks/AutoTasks_backend")
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AutoTasks_backend.settings')
+# django.setup()
+
+# Linux setup below
+sys.path.append("/mnt/c/Users/Papis/Documents/~GitHub Projects/AutoTasks/AutoTasks_backend")
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AutoTasks_backend.settings')
 django.setup()
 

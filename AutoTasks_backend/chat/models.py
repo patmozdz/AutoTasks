@@ -106,22 +106,22 @@ class Chat(models.Model):
     @classmethod
     def chat_completion_from_reminder(cls, user: User, reminder: Reminder):  # TODO: Might get messed up if you're actively chatting with ChatGPT while a reminder is triggered
         """
-        This function gets called every hour(?) and allow ChatGPT to outreach to users based on their reminders
+        This function gets triggered when a reminder time has passed.
         """
         assert reminder.user == user, "Reminder user does not match chat user."
 
         chat = cls.objects.filter(user=user).first()
-        if reminder.notified:  # Treat the notification differently if the reminder was already notified before
+        if not reminder.notified:  # Treat the notification differently if the reminder was already notified before
             chat.messages.append(
                             {
-                                "role": "reminder_system",
+                                "role": "system",
                                 "content": f"The reminder with id {reminder.id} was triggered.",
                             }
                         )  # extend conversation with reminder notification
         else:
             chat.messages.append(
                             {
-                                "role": "reminder_system",
+                                "role": "system",
                                 "content": f"A follow up for the reminder with id {reminder.id} was triggered.",
                             }
                         )  # extend conversation with follow up reminder notification.
