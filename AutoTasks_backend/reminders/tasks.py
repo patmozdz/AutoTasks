@@ -16,7 +16,7 @@ def watch_for_reminder_time():
             reminder.notified = True  # Flag to indicate notification was sent
             reminder.save()
 
-            # Below is for testing purposes, below should print to Celery worker's console
+            # Below is for testing purposes, below should print to Celery worker's console. In production this should relay the message to the user's phone number by calling Twilio API.
             response_message = response.choices[0].message.content
             print(response_message)
         except Exception as e:
