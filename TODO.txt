@@ -1,0 +1,2 @@
+Ideas to do:
+Change entire 'reminder' system to be a 'check-in' system so ChatGPT understands the purpose better
