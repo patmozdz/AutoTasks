@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "autotasks"
+name = "AutoTasks_backend"
 version = "0.1.0"
 description = "An AI powered app for managing tasks and reminders."
 authors = ["Patrick Mozdzierz"]
