@@ -71,8 +71,9 @@ class Chat(models.Model):
 
         response_message_dict = response.model_dump(exclude_unset=True)['choices'][0]['message']
         self.messages.append(response_message_dict)  # extend conversation with reply
-        response_in_dict = response.model_dump(exclude_unset=True)  # Convert to dict so it can be converted to JSON for database
-        self.response_history.append(response_in_dict)
+        full_response_in_dict = response.model_dump(exclude_unset=True)  # Convert to dict so it can be converted to JSON for database
+        self.response_history.append(full_response_in_dict)
+        self.save()
 
         self.update_users_system_prompt_with_reminders_from_database()
         return response
