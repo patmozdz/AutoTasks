@@ -69,7 +69,8 @@ class Chat(models.Model):
             max_tokens=150,
             )  # TODO: Adjust max_tokens
 
-        self.messages.append(response.choices[0].message)  # extend conversation with reply
+        response_message_dict = response.model_dump(exclude_unset=True)['choices'][0]['message']
+        self.messages.append(response_message_dict)  # extend conversation with reply
         response_in_dict = response.model_dump(exclude_unset=True)  # Convert to dict so it can be converted to JSON for database
         self.response_history.append(response_in_dict)
 
@@ -135,13 +136,7 @@ class Chat(models.Model):
         # Call the API method with the arguments
         response = self.get_response_and_add_to_history()
 
-        while response.choices[0].message.tool_calls:
-            response_message = response.choices[0].message
-            response_message_dict = response.model_dump(exclude_unset=True)['choices'][0]['message']
-            self.messages.append(response_message_dict)  # extend conversation with reply
-            self.save()  # TODO: Maybe only save at the end to prevent partial stuff getting saved in the database?
-
-            tool_calls = response_message.tool_calls
+        while tool_calls := response.choices[0].message.tool_calls:
             # Check if the model wanted to call a function
             if tool_calls:
                 # TODO: Handle errors
