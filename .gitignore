@@ -162,4 +162,4 @@ cython_debug/
 .vscode
 
 # Ignore the 'ignore' folder
-/ignore
+*/ignore
