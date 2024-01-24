@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import transaction
 User = get_user_model()
 
 
@@ -62,5 +63,11 @@ class Reminder(models.Model):
         """
         Deletes an existing reminder.
         """
-        cls.objects.filter(user=user, id=reminder_id).delete()
-        return f'Deleted reminder with id {reminder_id}'
+
+        with transaction.atomic():  # Used to treat transaction as a single unit of work, so if one operation fails then all are rolled back. select_for_update() is used to lock the row until the end of the transaction to prevent race conditions between delete_reminder() and watch_for_reminder_time()
+            reminder = cls.objects.filter(user=user, id=reminder_id).select_for_update().first()
+            if reminder:
+                reminder.delete()
+                return f'Deleted reminder with id {reminder_id}'
+            else:
+                return f'Reminder with id {reminder_id} not found or already processed.'
