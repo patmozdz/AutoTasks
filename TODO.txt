@@ -4,3 +4,6 @@ Change entire 'reminder' system to be a 'check-in' system so ChatGPT understands
 Looks like reminders were not getting edited correctly and so ChatGPT kept getting triggered even though a follow up reminder was set for tomorrow. Check messages under chat_chat in database for more info.
 
 Migrate poetry to be inside the AutoTasks_backend folder instead of in AutoTask folder
+
+Add method to truncate history. Currently, the entire conversation with ALL messages is sent with each request, so as a conversation continues, more and more tokens will be used.
+Truncate older messaged by maybe just including system prompt + 5 most recent messages (maybe even make it depend on the length of the messages too, so anywhere from 3-7 most recent messages).
