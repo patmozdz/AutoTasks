@@ -122,6 +122,8 @@ class Chat(models.Model):
                                 "content": f"The reminder with id {reminder.id} was triggered.",
                             }
                         )  # extend conversation with reminder notification
+            reminder.notified = True
+            reminder.save()
         else:
             chat.messages.append(
                             {
