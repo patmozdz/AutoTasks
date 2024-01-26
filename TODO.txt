@@ -13,3 +13,5 @@ Make sure there aren't race conditions for edit_reminder().
 Set up recurrence for recurrence interval in reminders.
 
 Change datetime.now() to use timezones
+
+Add CELERY_RESULTS_BACKEND so that results of periodic celery worker are stored for logging purposes
