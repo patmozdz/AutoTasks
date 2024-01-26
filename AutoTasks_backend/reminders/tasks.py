@@ -15,15 +15,20 @@ def watch_for_reminder_time():
         for reminder in reminders:
             try:
                 user = reminder.user
-                response = Chat.chat_completion_from_reminder(user, reminder)
+                print(Reminder.edit_reminder(user, reminder.id, reminder_time=current_time))
+                print(f"Reminder {reminder.id} has been edited to have a reminder_time of {current_time}")
+                print(reminder)
 
-                # Moved setting reminder.notified to True to chat_completion_from_reminder() in chat/models.py because the chat completion can delete or edit the reminder, and so if we do it here
-                # then we can potentially be working on a reminder object that no longer exists in the database, and therefore be overwriting any adjustments or deletions.
-                # Plus, it's more logical to change reminder.notified to True right after adding the notification message.
+                # user = reminder.user
+                # response = Chat.chat_completion_from_reminder(user, reminder)
 
-                # Below is for testing purposes, below should print to Celery worker's console. In production this should relay the message to the user's phone number by calling Twilio API.
-                response_message = response.choices[0].message.content
-                print(response_message)
+                # # Moved setting reminder.notified to True to chat_completion_from_reminder() in chat/models.py because the chat completion can delete or edit the reminder, and so if we do it here
+                # # then we can potentially be working on a reminder object that no longer exists in the database, and therefore be overwriting any adjustments or deletions.
+                # # Plus, it's more logical to change reminder.notified to True right after adding the notification message.
+
+                # # Below is for testing purposes, below should print to Celery worker's console. In production this should relay the message to the user's phone number by calling Twilio API.
+                # response_message = response.choices[0].message.content
+                # print(response_message)
 
             except Exception as e:
                 print(e)
