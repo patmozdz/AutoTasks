@@ -124,6 +124,7 @@ class Chat(models.Model):
                         )  # extend conversation with reminder notification
             reminder.notified = True
             reminder.save()
+            chat.save()
         else:
             chat.messages.append(
                             {
@@ -131,6 +132,7 @@ class Chat(models.Model):
                                 "content": f"A follow up for the reminder with id {reminder.id} was triggered.",
                             }
                         )  # extend conversation with follow up reminder notification.
+            chat.save()
 
         response = chat.get_and_save_response_with_tools_options()
         return response
