@@ -3,6 +3,12 @@ from datetime import datetime
 from django.db import transaction
 from .models import Reminder
 from chat.models import Chat
+from AutoTasks_backend import secrets_manager
+from twilio.rest import Client
+
+
+# Set up Twilio client
+client = Client(secrets_manager.TWILIO_ACCOUNT_SID, secrets_manager.TWILIO_AUTH_TOKEN)
 
 
 # This task is run in 'AutoTasks_backend/celery.py' every minute
