@@ -71,3 +71,6 @@ if __name__ == '__main__':
 
         response, status_code = pretend_receive_sms_from_twilio(pretend_request)
         print(response)
+
+# Features of most recent simulation:
+# ChatGPT can now remind you when reminders trigger and reschedule them/continuously remind you if you don't reply
