@@ -8,7 +8,7 @@ from twilio.rest import Client
 
 
 # Set up Twilio client
-client = Client(secrets_manager.TWILIO_ACCOUNT_SID, secrets_manager.TWILIO_AUTH_TOKEN)
+twilio_client = Client(secrets_manager.TWILIO_ACCOUNT_SID, secrets_manager.TWILIO_AUTH_TOKEN)
 
 
 # This task is run in 'AutoTasks_backend/celery.py' every minute
@@ -30,6 +30,15 @@ def watch_for_reminder_time():
                 # Below is for testing purposes, below should print to Celery worker's console. In production this should relay the message to the user's phone number by calling Twilio API.
                 response_message = response.choices[0].message.content
                 print(response_message)
+
+                # For production:
+                message = twilio_client.messages.create(
+                     body=response_message,
+                     from_='+15017122661',  # Replace with messaging_service_sid for more features
+                     to=user.phone,
+                 )
+
+                print(message.sid)
 
             except Exception as e:
                 print(e)

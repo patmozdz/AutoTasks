@@ -1,10 +1,6 @@
 Ideas to do:
 Change entire 'reminder' system to be a 'check-in' system so ChatGPT understands the purpose better
 
-Looks like reminders were not getting edited correctly and so ChatGPT kept getting triggered even though a follow up reminder was set for tomorrow. Check messages under chat_chat in database for more info.
-
-Migrate poetry to be inside the AutoTasks_backend folder instead of in AutoTask folder
-
 Add method to truncate history. Currently, the entire conversation with ALL messages is sent with each request, so as a conversation continues, more and more tokens will be used.
 Truncate older messaged by maybe just including system prompt + 5 most recent messages (maybe even make it depend on the length of the messages too, so anywhere from 3-7 most recent messages).
 
@@ -15,3 +11,7 @@ Set up recurrence for recurrence interval in reminders.
 Change datetime.now() to use timezones
 
 Add CELERY_RESULTS_BACKEND so that results of periodic celery worker are stored for logging purposes
+
+When using twilio_client.messages.create, use messaging_service_sid instead of from_. Twilio's messaging service has a lot of features that may be needed.
+
+Secure the webhook by validating incoming Twilio requests
