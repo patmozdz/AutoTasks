@@ -1,6 +1,5 @@
 Add Azure CLI to path
 Log into Azure CLI
-python manage.py setup_periodic_task
 
 version: '3'
 
@@ -46,3 +45,16 @@ celery -A AutoTasks_backend beat
 redis-cli
 KEYS *
 DEL queue_name
+
+
+# Steps to run using docker-compose:
+docker-compose up
+
+# (In new terminal) Execute chat/chat_test.py from within the 'web' container.
+docker-compose exec web python chat/chat_test.py
+
+# To end:
+docker-compose down
+
+# If you want to run in background, use: docker-compose up -d. If this is done, use docker-compose logs -f [service_name] in a terminal.
+# For example, docker-compose logs -f web

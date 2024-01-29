@@ -15,3 +15,5 @@ Add CELERY_RESULTS_BACKEND so that results of periodic celery worker are stored 
 When using twilio_client.messages.create, use messaging_service_sid instead of from_. Twilio's messaging service has a lot of features that may be needed.
 
 Secure the webhook by validating incoming Twilio requests
+
+In docker-compose.yml use Azure managed identity instead of environmental variables

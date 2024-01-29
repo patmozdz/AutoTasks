@@ -1,6 +1,7 @@
 import os
 import django
 import sys
+from pathlib import Path
 
 # Windows setup below
 # sys.path.append("C:/Users/Papis/Documents/~GitHub Projects/AutoTasks/AutoTasks_backend")
@@ -8,9 +9,16 @@ import sys
 # django.setup()
 
 # Linux setup below
-sys.path.append("/mnt/c/Users/Papis/Documents/~GitHub Projects/AutoTasks/AutoTasks_backend")
+# sys.path.append("/mnt/c/Users/Papis/Documents/~GitHub Projects/AutoTasks/AutoTasks_backend")
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AutoTasks_backend.settings')
+# django.setup()
+
+# Docker setup below
+BASE_DIR = Path(__file__).resolve().parent.parent  # Leads to root directory
+sys.path.append(str(BASE_DIR))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AutoTasks_backend.settings')
 django.setup()
+
 
 from rest_framework import status
 from django.contrib.auth import authenticate
