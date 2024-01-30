@@ -6,11 +6,13 @@ from twilio.twiml.messaging_response import MessagingResponse
 from chat.models import Chat
 from django.contrib.auth import get_user_model
 from AutoTasks_backend import secrets_manager
+from api.utils import validate_request_from_twilio
 
 User = get_user_model()
 
 
 @api_view(['POST'])
+@validate_request_from_twilio  # Decorator to validate the request is from Twilio
 def receive_sms_from_twilio(request):
     body = request.POST.get('Body', None)
     phone = request.POST.get('From', None)
