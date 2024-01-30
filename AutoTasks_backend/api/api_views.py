@@ -39,8 +39,12 @@ def receive_sms_from_twilio(request):
             new_user = User.objects.create_user(phone=phone)  # Modified to use username=phone
             new_user.save()
             resp.message = "Thank you! You have been registered. Type anything to engage with the AutoTasker."
-        else:
+
+        elif body == "REGISTER":
             resp.message = "Thank you for messaging! Please reply with the registration code to engage with the AutoTasker."
+
+        else:  # Unauthenticated user sends a random message, respond with nothing
+            return Response(str(resp), status=status.HTTP_204_NO_CONTENT, content_type='text/xml')
 
     # Do you need to send a message to the user or is sending the response enough?
     return Response(str(resp), status=status.HTTP_200_OK, content_type='text/xml')
