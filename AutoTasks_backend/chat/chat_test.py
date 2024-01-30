@@ -25,6 +25,8 @@ from django.contrib.auth import authenticate
 from twilio.twiml.messaging_response import MessagingResponse
 from chat.models import Chat
 from django.contrib.auth import get_user_model
+from AutoTasks_backend import secrets_manager
+
 User = get_user_model()
 
 
@@ -49,10 +51,13 @@ def pretend_receive_sms_from_twilio(request):
             resp.message = chat_response.choices[0].message.content
     else:
         # Handle unauthenticated user
-        new_user = User.objects.create_user(phone=phone)  # Modified to use username=phone
-        new_user.save()
         resp = MessagingResponse()
-        resp.message = "Thank you for registering! Please type to engage with the autotasker."
+        if body == secrets_manager.REGISTRATION_CODE:
+            new_user = User.objects.create_user(phone=phone)  # Modified to use username=phone
+            new_user.save()
+            resp.message = "Thank you! You have been registered. Type anything to engage with the AutoTasker."
+        else:
+            resp.message = "Thank you for messaging! Please reply with the registration code to engage with the AutoTasker."
 
     return resp.message, status.HTTP_200_OK
 

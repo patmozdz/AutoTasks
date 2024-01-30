@@ -23,3 +23,6 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 # Twilio Account SID and Auth Token can be found at twilio.com/console
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
+
+# Registration code
+REGISTRATION_CODE = os.environ.get("REGISTRATION_CODE")
