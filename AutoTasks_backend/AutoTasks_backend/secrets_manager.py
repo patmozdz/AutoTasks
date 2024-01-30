@@ -26,3 +26,6 @@ TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN")
 
 # Registration code
 REGISTRATION_CODE = os.environ.get("REGISTRATION_CODE")
+
+# Django
+DJANGO_SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
