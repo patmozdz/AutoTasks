@@ -27,7 +27,7 @@ SECRET_KEY = secrets_manager.DJANGO_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['lemming-feasible-monitor.ngrok-free.app']  # Add Ngrok domain to allowed hosts for developement (change in production)
 
 
 # Application definition

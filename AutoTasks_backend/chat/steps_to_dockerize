@@ -53,6 +53,9 @@ docker-compose up
 # (In new terminal) Execute chat/chat_test.py from within the 'web' container.
 docker-compose exec web python chat/chat_test.py
 
+# To view the ngrok status interface, navigate to a browser on the host machine and enter:
+http://localhost:4040
+
 # To end:
 docker-compose down
 

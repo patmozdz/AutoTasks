@@ -32,13 +32,13 @@ def watch_for_reminder_time():
                 print(response_message)
 
                 # For production:
-                # message = twilio_client.messages.create(
-                #      body=response_message,
-                #      from_='+15017122661',  # Replace with messaging_service_sid for more features
-                #      to=user.phone,
-                #  )
+                message = twilio_client.messages.create(
+                     body=response_message,
+                     from_='+18889742827',  # Replace with messaging_service_sid for more features
+                     to=user.phone,
+                 )
 
-                # print(message.sid)
+                print(message.sid)
 
             except Exception as e:
                 print(e)
