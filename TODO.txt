@@ -19,3 +19,5 @@ Secure the webhook by validating incoming Twilio requests
 In docker-compose.yml use Azure managed identity instead of environmental variables
 
 Include an 'if settings.DEBUG = true' (or whatever it is) check to differentiate between production and developement code instead of commenting stuff out
+
+Migrate to using Discord due to new toll free phone number regulations
