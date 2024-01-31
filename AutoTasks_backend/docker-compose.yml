@@ -24,7 +24,7 @@ services:
     image: ngrok/ngrok
     ports:
       - "4040:4040"  # Web interface (for status and stuff) can be looked at by going to http://localhost:4040 on the host machine's browser
-    command: http --domain=lemming-feasible-monitor.ngrok-free.app 8000  # Don't use ngrok at start because the image's entrypoint is the ngrok executable itself
+    command: http --domain=lemming-feasible-monitor.ngrok-free.app web:8000  # Don't use ngrok at start because the image's entrypoint is the ngrok executable itself. Use web:8000 to access port 8000 of web, which is running the Django server (the ngrok container does not have the Django server on port 8000)
     depends_on:
       - web
     environment:

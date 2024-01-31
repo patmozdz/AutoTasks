@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['lemming-feasible-monitor.ngrok-free.app']  # Add Ngrok domain to allowed hosts for developement (change in production)
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Used for developement because Ngrok and Twilio require https (Django developement server uses http by default)
 
 # Application definition
 
