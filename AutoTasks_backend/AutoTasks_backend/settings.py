@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = [
-    'user.authentication.PhoneAuthenticationBackend',
+    'user.authentication.DiscordUserAuthenticationBackend',
 ]
 
 MIDDLEWARE = [

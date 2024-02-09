@@ -7,23 +7,12 @@ from rest_framework.response import Response
 from AutoTasks_backend import secrets_manager
 
 
-def validate_request_from_twilio(function):
-    """Validates that incoming requests genuinely originated from Twilio"""
-    @wraps(function)
-    def decorated_function(request, *args, **kwargs):
-        # Create an instance of the RequestValidator class
-        validator = RequestValidator(secrets_manager.TWILIO_AUTH_TOKEN)
-
-        # Validate the request using its URL, POST data,
-        # and X-TWILIO-SIGNATURE header
-        request_valid = validator.validate(
-            request.build_absolute_uri(),
-            request.POST,
-            request.META.get('HTTP_X_TWILIO_SIGNATURE', ''))
-
-        # Continue processing the request if it's valid, return a 403 error if it's not
-        if request_valid:
-            return function(request, *args, **kwargs)
-        else:
+def validate_internal(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        if auth_header != f'Token {secrets_manager.INTERNAL_TOKEN}':
             return Response({'detail': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
-    return decorated_function
+
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view

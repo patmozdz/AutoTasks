@@ -8,6 +8,8 @@ from . import gpt_tools
 from datetime import datetime
 from .prompt import system_prompt_text
 from django.contrib.auth import get_user_model
+from zoneinfo import ZoneInfo
+
 User = get_user_model()
 
 
@@ -45,8 +47,10 @@ class Chat(models.Model):
             # Join all formatted reminders into a single string
             reminders_string = "\n".join(reminder_list)
 
+            # TODO: Maybe use the user's timezone instead of hardcoding it to Chicago
+            timezone = ZoneInfo('America/Chicago')
             #  the system prompt with the new reminders, also  with current datetime
-            d_system_message = "Current datetime: " + str(datetime.now()) + "\n" + self.SYSTEM_MESSAGE + "\n" + reminders_string
+            d_system_message = "Current datetime: " + str(datetime.now(timezone)) + "\n" + self.SYSTEM_MESSAGE + "\n" + reminders_string
 
             #  the first message (system message) in messages. Can change to a a for loop to find system message if system message isn't always first message
             if self.messages[0]['role'] == 'system':

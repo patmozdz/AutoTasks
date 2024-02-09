@@ -1,6 +1,6 @@
 from django.urls import path
-from .api_views import receive_sms_from_twilio
+from .api_views import discord_webhook
 
 urlpatterns = [
-    path('twilio_endpoint/', receive_sms_from_twilio, name='twilio_endpoint'),
+    path('discord_webhook/', discord_webhook, name='discord_webhook'),
 ]

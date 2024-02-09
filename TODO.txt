@@ -8,7 +8,7 @@ Make sure there aren't race conditions for edit_reminder().
 
 Set up recurrence for recurrence interval in reminders.
 
-Change datetime.now() to use timezones
+Change datetime.now(timezone) to use the user's timezone
 
 Add CELERY_RESULTS_BACKEND so that results of periodic celery worker are stored for logging purposes
 
@@ -21,3 +21,13 @@ In docker-compose.yml use Azure managed identity instead of environmental variab
 Include an 'if settings.DEBUG = true' (or whatever it is) check to differentiate between production and developement code instead of commenting stuff out
 
 Migrate to using Discord due to new toll free phone number regulations
+
+Put secrets_manager as it's own service (it's own Docker container). This decouples the secrets_manager from Django. The secrets_manager service can then expose a lightweight API for any app to access secrets.
+
+Fix sending back an empty message when first message is not REGISTER because it generates an error 400 Bad Requests instead of doing nothing.
+
+Protect against injection attacks (maybe people putting print statement to learn internal workings or plain code in messages? Check if it's a concern)
+
+Fix issue where celerybeat and celery are out of sync with system time. See below for snippet of celery container log:
+2024-02-02 14:46:00 [2024-02-02 20:46:00,018: INFO/ForkPoolWorker-16] Task reminders.tasks.watch_for_reminder_time[468869e8-112f-4f16-b36a-4821e2af66c4] succeeded in 0.01522400599787943s: None
+As visible, the system time is '2024-02-02 14:46:00', but the celery worker time is '2024-02-02 20:46:00,018'. Perhaps timezones must be implemented to fix this

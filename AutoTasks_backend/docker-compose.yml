@@ -12,6 +12,7 @@ services:
       - redis
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+      - INTERNAL_TOKEN=${INTERNAL_TOKEN}
       # Below is temporary, use Azure managed identity when deploying container to Azure
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
@@ -40,6 +41,7 @@ services:
       - redis
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+      - DISCORD_BOT_BROKER_URL=redis://redis:6379/1
       # Below is temporary, use Azure managed identity when deploying container to Azure
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
@@ -54,6 +56,7 @@ services:
       - redis
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+      - DISCORD_BOT_BROKER_URL=redis://redis:6379/1
       # Below is temporary, use Azure managed identity when deploying container to Azure
       # Celery beat also needs access to env variables because it needs to know about the task's signature,
       # which includes the function names and arguments. Since the API key is an argument, it needs to know the env var API key.
@@ -65,3 +68,16 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+
+  discord_bot:
+    build: .
+    command: python scripts/discord_bot.py
+    volumes:
+      - ./scripts:/app/scripts
+    depends_on:
+      - redis
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}  # Add other necessary environment variables
+      - DISCORD_BOT_BROKER_URL=redis://redis:6379/1
+      - INTERNAL_TOKEN=${INTERNAL_TOKEN}
+  

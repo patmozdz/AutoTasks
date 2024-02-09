@@ -2,10 +2,10 @@ from django.contrib.auth.backends import BaseBackend
 from .models import User
 
 
-class PhoneAuthenticationBackend(BaseBackend):
-    def authenticate(self, request, phone=None):
+class DiscordUserAuthenticationBackend(BaseBackend):
+    def authenticate(self, request, discord_user_id=None):
         try:
-            user = User.objects.get(phone=phone)
+            user = User.objects.get(discord_user_id=discord_user_id)
 
             return user
         except User.DoesNotExist:
