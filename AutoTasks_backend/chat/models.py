@@ -50,11 +50,11 @@ class Chat(models.Model):
             # TODO: Maybe use the user's timezone instead of hardcoding it to Chicago
             timezone = ZoneInfo('America/Chicago')
             #  the system prompt with the new reminders, also  with current datetime
-            d_system_message = "Current datetime: " + str(datetime.now(timezone)) + "\n" + self.SYSTEM_MESSAGE + "\n" + reminders_string
+            dated_system_message = "Current datetime: " + str(datetime.now(timezone)) + "\n" + self.SYSTEM_MESSAGE + "\n" + reminders_string
 
             #  the first message (system message) in messages. Can change to a a for loop to find system message if system message isn't always first message
             if self.messages[0]['role'] == 'system':
-                self.messages[0]['content'] = d_system_message
+                self.messages[0]['content'] = dated_system_message
                 self.save()  # TODO: Maybe only save at the end to prevent partial stuff getting saved in the database?
             else:
                 print("No system message found in the chat object.")
@@ -65,8 +65,13 @@ class Chat(models.Model):
 
     def get_response_and_add_to_history(self, tool_choice='auto'):  # Can be given a specific tool_choice to force the model to use a specific function
         self.update_users_system_prompt_with_reminders_from_database()
+
+        assert self.messages[0]['role'] == 'system', "First message in chat object is not a system message."
+        messages_sent = [self.messages[0]] + self.messages[-5:]  # Only use the system prompt and 5 most recent messages to avoid using too many tokens
+        # TODO: Adjust above. Maybe 10 messages?
+
         response = self.client.chat.completions.create(
-            messages=self.messages,
+            messages=messages_sent,
             model=self.GPT_MODEL,
             tools=self.tools,
             tool_choice='auto',
