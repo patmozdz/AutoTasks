@@ -88,8 +88,12 @@ WSGI_APPLICATION = 'AutoTasks_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydatabase',  # Replace with actual name once created
+        'USER': 'mydatabaseuser',  # Replace with actual username once created
+        'PASSWORD': 'mypassword',  # Replace with actual password once created
+        'HOST': 'database',  # localhost isn't used because Docker provides DNS resolution for services
+        'PORT': '5432',
     }
 }
 

@@ -3,13 +3,14 @@ version: '3'
 services:
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn AutoTasks_backend.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app  # Mounts the current directory into /app in the container
     ports:
       - "8000:8000"
     depends_on:
       - redis
+      - database
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - INTERNAL_TOKEN=${INTERNAL_TOKEN}
@@ -18,6 +19,16 @@ services:
       - REGISTRATION_CODE=${REGISTRATION_CODE}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
   
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"  # Maps port 80 on the host to port 80 in the container
+    depends_on:
+      - web
+
+
   # Below is for developement, remove for production
   ngrok:
     image: ngrok/ngrok
@@ -75,3 +86,14 @@ services:
       - DISCORD_BOT_BROKER_URL=redis://redis:6379/1
       - INTERNAL_TOKEN=${INTERNAL_TOKEN}
   
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: autotasks_database  # Replace with actual name
+      POSTGRES_USER: django_user  # Replace with actual name
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Replace with actual password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  volumes:
+    postgres_data:

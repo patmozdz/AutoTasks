@@ -24,5 +24,5 @@ COPY . /app/
 # Expose port 8000
 EXPOSE 8000
 
-# Start Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Start Gunicorn server
+CMD ["gunicorn", "AutoTasks_backend.wsgi:application", "--bind", "0.0.0.0:8000"]
