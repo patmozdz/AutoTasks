@@ -25,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = secrets_manager.DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['lemming-feasible-monitor.ngrok-free.app']  # Add Ngrok domain to allowed hosts for developement (change in production)
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Used for developement because Ngrok requires https (Django developement server uses http by default)
+if not DEBUG:
+    ALLOWED_HOSTS = ['lemming-feasible-monitor.ngrok-free.app']  # Add Ngrok domain to allowed hosts for developement (change in production)
+    SECURE_SSL_REDIRECT = True  # Enforces HTTPS
 
 # Application definition
 
