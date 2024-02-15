@@ -1,6 +1,3 @@
-from django.conf import settings
-from twilio.rest import Client
-from twilio.request_validator import RequestValidator
 from functools import wraps
 from rest_framework import status
 from rest_framework.response import Response

@@ -15,8 +15,6 @@ services:
       - INTERNAL_TOKEN=${INTERNAL_TOKEN}
       # Below is temporary, use Azure managed identity when deploying container to Azure
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - REGISTRATION_CODE=${REGISTRATION_CODE}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
   
@@ -44,8 +42,6 @@ services:
       - DISCORD_BOT_BROKER_URL=redis://redis:6379/1
       # Below is temporary, use Azure managed identity when deploying container to Azure
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
 
   celerybeat:
     build: .
@@ -61,8 +57,6 @@ services:
       # Celery beat also needs access to env variables because it needs to know about the task's signature,
       # which includes the function names and arguments. Since the API key is an argument, it needs to know the env var API key.
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
 
   redis:
     image: redis:latest

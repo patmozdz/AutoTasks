@@ -30,7 +30,7 @@ def watch_for_reminder_time():
                 # then we can potentially be working on a reminder object that no longer exists in the database, and therefore be overwriting any adjustments or deletions.
                 # Plus, it's more logical to change reminder.notified to True right after adding the notification message.
 
-                # Below is for testing purposes, below should print to Celery worker's console. In production this should relay the message to the user's phone number by calling Twilio API.
+                # Below is for testing purposes, below should print to Celery worker's console.
 
                 response_message = response.choices[0].message.content
                 print(response_message)  # For testing, prints to Celery worker's console

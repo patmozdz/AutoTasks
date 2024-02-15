@@ -22,7 +22,6 @@ django.setup()
 
 from rest_framework import status
 from django.contrib.auth import authenticate
-from twilio.twiml.messaging_response import MessagingResponse
 from chat.models import Chat
 from django.contrib.auth import get_user_model
 from AutoTasks_backend import secrets_manager
@@ -30,7 +29,7 @@ from AutoTasks_backend import secrets_manager
 User = get_user_model()
 
 
-def pretend_receive_sms_from_twilio(request):
+def pretend_receive_sms(request):
     body = request.get('Body', None)
     phone = request.get('From', None)
 
@@ -42,24 +41,21 @@ def pretend_receive_sms_from_twilio(request):
         end_choices = ['END', 'STOP', 'QUIT', 'EXIT', 'UNSUBSCRIBE', 'CANCEL']
         if body in end_choices:
             # TODO: Handle user unsubscribing, maybe delete account?
-            resp = MessagingResponse()
-            resp.message("You have been unsubscribed.")
+            resp = "You have been unsubscribed."
         else:
             # Handle user sending a message
-            resp = MessagingResponse()
             chat_response = Chat.chat_completion_from_sms_body(user, body)
-            resp.message = chat_response.choices[0].message.content
+            resp = chat_response.choices[0].message.content
     else:
         # Handle unauthenticated user
-        resp = MessagingResponse()
         if body == secrets_manager.REGISTRATION_CODE:
             new_user = User.objects.create_user(phone=phone)  # Modified to use username=phone
             new_user.save()
-            resp.message = "Thank you! You have been registered. Type anything to engage with the AutoTasker."
+            resp = "Thank you! You have been registered. Type anything to engage with the AutoTasker."
         else:
-            resp.message = "Thank you for messaging! Please reply with the registration code to engage with the AutoTasker."
+            resp = "Thank you for messaging! Please reply with the registration code to engage with the AutoTasker."
 
-    return resp.message, status.HTTP_200_OK
+    return resp, status.HTTP_200_OK
 
 
 import warnings  # Temporarily ignore the timezone warning
@@ -82,7 +78,7 @@ if __name__ == '__main__':
         if simulated_text_message == "quit":
             break
 
-        response, status_code = pretend_receive_sms_from_twilio(pretend_request)
+        response, status_code = pretend_receive_sms(pretend_request)
         print(response)
 
 # Features of most recent simulation:
