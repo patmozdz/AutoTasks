@@ -1,0 +1,1 @@
+AutoTasks is an AI assisted reminders application that lets you manage your reminders using natural language. It was originally created to work through text messaging but has since transitioned to use through a Discord bot.
