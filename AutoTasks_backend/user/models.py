@@ -15,9 +15,21 @@ class UserManager(BaseUserManager):
 
         return user
 
+    def delete_user(self, user, soft_delete=True):
+        if not isinstance(user, self.model):
+            raise ValueError(_('Expected a User instance'))
+
+        if soft_delete:
+            user.is_deleted = True
+            user.save(using=self._db)
+        else:
+            user.delete()
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     discord_user_id = models.CharField(_('discord user id'), unique=True, max_length=30)
+
+    is_deleted = models.BooleanField(default=False)  # Used as soft delete flag
 
     USERNAME_FIELD = 'discord_user_id'
     REQUIRED_FIELDS = []
