@@ -26,16 +26,27 @@ def discord_webhook(request):
 
     if user:
         end_choices = ['END', 'STOP', 'QUIT', 'EXIT', 'UNSUBSCRIBE', 'CANCEL']
-        if body in end_choices:
-            # TODO: Handle user unsubscribing, maybe delete account?
+        delete_choices = ['DELETE', 'REMOVE', 'UNSUBSCRIBE', 'CANCEL', 'DELETE ACCOUNT', 'REMOVE ACCOUNT']
+
+        if body.lower() == 'help':
+            resp_body = "Reply with END to unsubscribe. Reply with DELETE to delete your account."
+        elif body in end_choices:
+            # TODO: Add a confirmation step, like "Are you sure you want to unsubscribe? Reply with UNSUBSCRIBE to confirm."
+            # TODO: Handle soft deleting the user
             resp_body = "You have been unsubscribed from the AutoTasker. To resubscribe, reply with the registration code."
+        elif body.lower() in delete_choices:
+            # Hard delete the user
+            # TODO: Add a confirmation step, like "Are you sure you want to delete your account? Reply with DELETE MY ACCOUNT to confirm."
+            User.objects.delete_user(user, soft_delete=False)
+            resp_body = "Your account has been deleted."
         else:
-            # Handle user sending a message
+            # Send the message to ChatGPT
             chat_response = Chat.chat_completion_from_sms_body(user, body)
             resp_body = chat_response.choices[0].message.content
     else:
         # Handle unauthenticated user
         if body == "REGISTER":
+            # New user welcome message
             resp_body = "Thank you for messaging! Please reply with the registration code to engage with the AutoTasker."
 
         elif body == secrets_manager.REGISTRATION_CODE:
