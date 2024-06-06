@@ -28,7 +28,7 @@ SECRET_KEY = secrets_manager.DJANGO_SECRET_KEY
 DEBUG = False
 
 if not DEBUG:
-    ALLOWED_HOSTS = ['lemming-feasible-monitor.ngrok-free.app']  # Add Ngrok domain to allowed hosts for developement (change in production)
+    ALLOWED_HOSTS = ['nginx']  # Allow Django (running on Gunicorn) to receive requests from the Nginx server
     SECURE_SSL_REDIRECT = True  # Enforces HTTPS
 
 # Application definition
