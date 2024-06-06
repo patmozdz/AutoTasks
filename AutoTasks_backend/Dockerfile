@@ -24,5 +24,5 @@ COPY . /app/
 # Expose port 8000
 EXPOSE 8000
 
-# Start Gunicorn server
+# Start Gunicorn server (this is a default command, docker-compose will override it with the 'command' key)
 CMD ["gunicorn", "AutoTasks_backend.wsgi:application", "--bind", "0.0.0.0:8000"]
