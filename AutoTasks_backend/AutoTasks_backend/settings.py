@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'AutoTasks_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',  # Replace with actual name once created
-        'USER': 'mydatabaseuser',  # Replace with actual username once created
-        'PASSWORD': 'mypassword',  # Replace with actual password once created
+        'NAME': 'autotasks_database',  # Replace with actual name once created
+        'USER': 'django_user',  # Replace with actual username once created
+        'PASSWORD': secrets_manager.POSTGRES_PASSWORD,
         'HOST': 'database',  # localhost isn't used because Docker provides DNS resolution for services
         'PORT': '5432',
     }

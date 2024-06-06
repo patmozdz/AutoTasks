@@ -1,3 +1,5 @@
+# Dockerfile is used to create the 'web' image in the first place
+
 # Use an official Python runtime as a parent image
 FROM python:3.12
 

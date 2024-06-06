@@ -22,6 +22,9 @@ REGISTRATION_CODE = os.environ.get("REGISTRATION_CODE")
 DJANGO_SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 INTERNAL_TOKEN = os.environ.get("INTERNAL_TOKEN")
 
+# Database (Postgres)
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+
 # Discord
 DISCORD_BOT_TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 DISCORD_BOT_BROKER_URL = os.environ.get("DISCORD_BOT_BROKER_URL")
