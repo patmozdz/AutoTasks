@@ -27,7 +27,7 @@ class CustomDiscordClient(discord.Client):
 
     async def send_to_django(self, message):
         async with aiohttp.ClientSession() as session:
-            endpoint_url = 'https://lemming-feasible-monitor.ngrok-free.app/api/discord_webhook/'
+            endpoint_url = 'http://nginx/api/discord_webhook/'  # The URL of the nginx endpoint (Docker sets up its own networking) that the bot will send messages to. The nginx endpoint will then forward the message to the Django app running on the Gunicorn server.
             headers = {'Authorization': f'Token {os.environ.get('INTERNAL_TOKEN')}'}
             data = {'content': message.content, 'user_id': str(message.author.id)}
 
