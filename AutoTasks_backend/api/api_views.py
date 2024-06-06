@@ -55,7 +55,7 @@ def discord_webhook(request):
             resp_body = "Thank you! You have been registered. Type anything to engage with the AutoTasker. Note: Responses are currently limited to a certain amount of tokens to avoid overcharging, so they may get abruptly cut off."
 
         else:
-            # Unauthenticated user sends a random message, respond with nothing
-            resp_body = ""  # Right now generates an error (400 Bad Request (error code: 50006): Cannot send an empty message), TODO: fix this
+            # Unauthenticated user sends a random message, respond with instructions (should it just not respond at all?)
+            resp_body = "Welcome! Please type 'REGISTER' to begin registration."
 
     return Response({"body": resp_body}, status=status.HTTP_200_OK)  # content_type='application/json' by default when using dictionaries in DRF
