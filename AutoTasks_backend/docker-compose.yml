@@ -96,6 +96,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Replace with actual password
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+      - ./init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
+
 
 volumes:
   postgres_data:
