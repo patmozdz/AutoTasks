@@ -91,12 +91,12 @@ services:
   database:
     image: postgres
     environment:
-      POSTGRES_DB: autotasks_database  # Not needed for now because the database name is hardcoded
-      POSTGRES_USER: django_user  # Not needed for now because the username is hardcoded
+      # The PostgreSQL Docker image will create a default database based on the info below
+      POSTGRES_DB: autotasks_database
+      POSTGRES_USER: django_user  # django_user is set as the postgres superuser, might want to change this for principle of least privelage
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-      - ./init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
 
 
 volumes:
