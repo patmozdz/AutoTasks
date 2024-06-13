@@ -29,7 +29,7 @@ DEBUG = False
 
 if not DEBUG:
     ALLOWED_HOSTS = ['nginx']  # Allow Django (running on Gunicorn) to receive requests from the Nginx server
-    SECURE_SSL_REDIRECT = True  # Enforces HTTPS
+    # SECURE_SSL_REDIRECT = True  # Enforces HTTPS (not needed because discord_bot is interacting with nginx over the Docker network, which is secure)
 
 # Application definition
 
